@@ -7,7 +7,7 @@ const Register = () => {
   const [error, setError] = useState("")
   const navigate = useNavigate()
 
-  //function to change controlle inputs
+  //function to change controller inputs
   const changeInputHandler = (e) => {
     setUserData((prevState) => {
       return {...prevState, [e.target.name]: e.target.value}
