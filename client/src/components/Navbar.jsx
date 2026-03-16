@@ -42,7 +42,7 @@ const Navbar = () => {
   return (
     <nav>
       <div className="container nav__container">
-        <Link className="nav__logo">ECGhana</Link>
+        <Link to="/elections" className="nav__logo">ECGhana</Link>
         <div>
           {!token ? (
             <menu>

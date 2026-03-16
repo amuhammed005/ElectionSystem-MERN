@@ -21,7 +21,7 @@ const Election = ({ _id: id, title, description, thumbnail }) => {
         <img src={thumbnail} alt={title} />
       </div>
       <div className="election__info">
-        <Link to={`/elections/${id}`}>
+        <Link to={`/election/${id}`}>
           <h4>{title}</h4>
         </Link>
         <p>
