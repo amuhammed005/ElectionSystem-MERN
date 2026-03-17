@@ -20,9 +20,9 @@ app.use(upload());
 // Configure CORS
 app.use(
   cors({
-    origin: "http://localhost:3000", // Frontend origin
+    origin: ["http://localhost:3000", "election-system-mern-dqcj.vercel.app"], // Frontend origin
     credentials: true, // Allows cookies and headers
-  })
+  }),
 );
 // Root route
 app.get("/", (req, res) => {
