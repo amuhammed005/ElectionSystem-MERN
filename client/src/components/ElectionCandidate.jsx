@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { IoMdTrash } from "react-icons/io";
 import { useSelector } from "react-redux";
 import confirmDelete from "../utils/confrimDelete.js";
@@ -38,7 +38,8 @@ const ElectionCandidate = ({ fullName, motto, image, _id: id }) => {
     if (!token) {
       navigate("/");
     }
-  }, []);
+  }, [ token, navigate]); // Redirect to login if no token
+  // }, []); --- IGNORE ---
 
   return (
     <li className="electionCandidate">
