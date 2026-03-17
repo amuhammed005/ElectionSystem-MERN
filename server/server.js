@@ -24,6 +24,10 @@ app.use(
     credentials: true, // Allows cookies and headers
   })
 );
+// Root route
+app.get("/", (req, res) => {
+  res.send("API is running...");
+});
 // Use routes
 app.use("/api", Routes);
 
