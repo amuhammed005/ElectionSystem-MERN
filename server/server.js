@@ -18,13 +18,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(upload());
 
 // Configure CORS
+const allowedOrigins = [process.env.CLIENT_URL, "http://localhost:3000"];
+
 app.use(
   cors({
-    origin: [
-      process.env.CLIENT_URL, // Frontend origin from environment variable
-      "http://localhost:3000",
-    ],
-    credentials: true, // Allows cookies and headers
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
   }),
 );
 // Root route
