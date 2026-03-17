@@ -21,9 +21,9 @@ app.use(upload());
 app.use(
   cors({
     origin: [
+      process.env.CLIENT_URL, // Frontend origin from environment variable
       "http://localhost:3000",
-      "https://election-system-mern-dqcj.vercel.app/",
-    ], // Frontend origin
+    ],
     credentials: true, // Allows cookies and headers
   }),
 );
