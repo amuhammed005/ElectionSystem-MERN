@@ -18,56 +18,59 @@ const Candidates = () => {
   const token = useSelector((state) => state?.vote?.currentVoter?.token);
   const voterId = useSelector((state) => state?.vote?.currentVoter?.id);
 
-  const getCandidates = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/elections/${selectedElection}/candidates`,
-        {
-          withCredentials: true,
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setCandidates(response.data);
-    } catch (error) {
-      console.error("Error fetching candidates:", error);
-    }
-  };
-
-  const getVoter = async () => {
-    try {
-      if (!voterId || !token) throw new Error("Invalid voter ID or token");
-
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/voters/${voterId}`,
-        {
-          withCredentials: true,
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      const votedElections = response.data.votedElections || [];
-      if (votedElections.includes(selectedElection)) {
-        setCanVote(false);
-      }
-    } catch (error) {
-      console.error("Error fetching voter data:", error.message);
-    }
-  };
-
+  
   const navigate = useNavigate();
-
+  
   useEffect(() => {
+    // Function to fetch candidates for the selected election
+    const getCandidates = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/elections/${selectedElection}/candidates`,
+          {
+            withCredentials: true,
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setCandidates(response.data);
+      } catch (error) {
+        console.error("Error fetching candidates:", error);
+      }
+    };
+    // Function to fetch voter data and check if they have already voted in this election
+    const getVoter = async () => {
+      try {
+        if (!voterId || !token) throw new Error("Invalid voter ID or token");
+  
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/voters/${voterId}`,
+          {
+            withCredentials: true,
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        const votedElections = response.data.votedElections || [];
+        if (votedElections.includes(selectedElection)) {
+          setCanVote(false);
+        }
+      } catch (error) {
+        console.error("Error fetching voter data:", error.message);
+      }
+    };
+    // Redirect to login if no token
     if (!token) {
       navigate("/");
     }
+    // Function to fetch candidates and voter data
     const fetchData = async () => {
       setLoading(true); // Start loading
       await Promise.all([getCandidates(), getVoter()]);
       setLoading(false); // Stop loading once both calls are done
     };
-
+    // Fetch candidates and voter data when component mounts
     fetchData();
 
-    //
+    // Refetch candidates and voter data when selectedElection, voterId, token, or navigate changes
   }, [selectedElection, voterId, token, navigate]);
 
   if (loading) {

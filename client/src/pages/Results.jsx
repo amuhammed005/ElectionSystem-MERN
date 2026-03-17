@@ -12,25 +12,26 @@ const Results = () => {
 
   const token = useSelector((state) => state?.vote?.currentVoter?.token);
 
-  const getElections = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/elections`,
-        { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
-      );
-      const elections = await response.data;
-      setElections(elections);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  
   useEffect(() => {
+    const getElections = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/elections`,
+          { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
+        );
+        const elections = await response.data;
+        setElections(elections);
+      } catch (error) {
+        console.log(error);
+      }
+    };
     if (!token) {
       navigate("/");
     }
     getElections();
-  }, [token, navigate]);
+  }, [token, navigate]); // Refetch elections when token, navigate, or getElections changes
+  // }, [token, navigate]); // Refetch elections when token or navigate changes --- IGNORE ---  
 
   return (
     <section className="results">

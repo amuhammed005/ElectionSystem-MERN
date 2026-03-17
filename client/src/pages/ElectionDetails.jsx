@@ -38,55 +38,7 @@ const ElectionDetails = () => {
 
   const token = useSelector((state) => state?.vote?.currentVoter?.token);
   const isAdmin = useSelector((state) => state?.vote?.currentVoter?.isAdmin);
-  const fetchSelectedElection = async () => {
-    setIsloading(true);
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/elections/${id}`,
-        { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
-      );
-      if (!response) {
-        console.log("Err fetching election", response);
-      }
-      console.log("Selected Election", response.data);
-      setElection(response.data);
-    } catch (error) {
-      console.error(error.message);
-    }
-    setIsloading(false);
-  };
-
-  const fetchElectionCandidates = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/elections/${id}/candidates`,
-        { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
-      );
-      if (!response) {
-        console.log("Err fetching election", response);
-      }
-      console.log("Election Candidates", response.data);
-      setElectionCandidates(response.data);
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-  const fetchElectionVoters = async () => {
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/elections/${id}/voters`,
-        { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
-      );
-      if (!response) {
-        console.log("Err fetching election", response);
-      }
-      console.log("Election voters", response.data);
-      setVoters(response.data);
-    } catch (error) {
-      console.error(error.message);
-    }
-  };
-
+  
   const handleDeleteElection = async () => {
     const result = await confirmDelete();
     if (result.isConfirmed) {
@@ -111,13 +63,61 @@ const ElectionDetails = () => {
   };
 
   useEffect(() => {
+    const fetchSelectedElection = async () => {
+      setIsloading(true);
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/elections/${id}`,
+          { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (!response) {
+          console.log("Err fetching election", response);
+        }
+        console.log("Selected Election", response.data);
+        setElection(response.data);
+      } catch (error) {
+        console.error(error.message);
+      }
+      setIsloading(false);
+    };
+  
+    const fetchElectionCandidates = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/elections/${id}/candidates`,
+          { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (!response) {
+          console.log("Err fetching election", response);
+        }
+        console.log("Election Candidates", response.data);
+        setElectionCandidates(response.data);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    const fetchElectionVoters = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/elections/${id}/voters`,
+          { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (!response) {
+          console.log("Err fetching election", response);
+        }
+        console.log("Election voters", response.data);
+        setVoters(response.data);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
     fetchSelectedElection();
     fetchElectionCandidates();
     fetchElectionVoters();
     if (!token) {
       navigate("/");
     }
-  }, [token, navigate]);
+  }, [token, navigate, id]); // Refetch election details, candidates, and voters when token, navigate, or id changes
 
   return (
     <>

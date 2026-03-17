@@ -33,29 +33,30 @@ const Elections = () => {
     (state) => state.ui.updateElectionModalShowing
   );
 
-  // Get all elections from db
-  const getElections = async () => {
-    setIsLoading(true);
-    try {
-      const response = await axios.get(
-        `${process.env.REACT_APP_API_URL}/elections`,
-        { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
-      );
-      const results = await response.data;
-      // Set elections collected from DB
-      setElections(results);
-      //
-    } catch (error) {
-      console.log(error);
-    }
-    setIsLoading(false);
-  };
-
+  
   const navigate = useNavigate();
-
+  
   useEffect(() => {
+    // Get all elections from db
+    const getElections = async () => {
+      setIsLoading(true);
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_API_URL}/elections`,
+          { withCredentials: true, headers: { Authorization: `Bearer ${token}` } }
+        );
+        const results = await response.data;
+        // Set elections collected from DB
+        setElections(results);
+        //
+      } catch (error) {
+        console.log(error);
+      }
+      setIsLoading(false);
+    };
+    // Fetch elections when component mounts
     getElections();
-    //
+    // Refetch elections when selectedElection, voterId, token, or navigate changes
     if (!token) {
       navigate("/");
     }

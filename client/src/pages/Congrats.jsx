@@ -9,7 +9,7 @@ const Congrats = () => {
     if (!token) {
       navigate("/");
     }
-  }, []);
+  }, [navigate, token]);
 
   return (
     <section className="congrats">
