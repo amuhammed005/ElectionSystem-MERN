@@ -26,7 +26,7 @@ const Login = () => {
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_API_URL}/voters/login`,
-        userData
+        userData,
       );
       const newVoter = await response.data;
       // Save new voter to local storage
@@ -36,9 +36,9 @@ const Login = () => {
       dispatch(voteActions.changeCurrentVoter(newVoter));
 
       navigate("/results");
-    } catch (err) {
-      console.log(err);
-      setError(err.response.data.message);
+    } catch (error) {
+      console.log(error);
+      console.log(error.response?.data?.message || error.message);
     }
   };
 
